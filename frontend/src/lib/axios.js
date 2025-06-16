@@ -1,0 +1,16 @@
+import axios from "axios";
+import useAuthStore from "../store/auth";
+const api = axios.create({
+  baseURL: "http://localhost:5000",
+  withCredentials: true,
+});
+
+api.interceptors.request.use((congif) => {
+  const token = useAuthStore.getState().token;
+  if (token) {
+    congif.headers.Authorization = `Bearer ${token}`;
+  }
+  return congif
+});
+
+export default api;
