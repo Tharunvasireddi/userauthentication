@@ -2,9 +2,11 @@ import { User } from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 const registerController = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, email, password, role } = req.body;
   try {
-    const isUserExisted = await User.findOne({ email });
+    const isUserExisted = await User.findOne({
+      $or: [{ username }, { email }],
+    });
     if (isUserExisted) {
       return res.status(404).json({
         success: false,
@@ -13,10 +15,14 @@ const registerController = async (req, res) => {
     }
     // since user is not existed so we have to create new user
     // for that we have to hash the password
-    console.log("hi hello");
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const newUser = await User.create({ email, password: hashedPassword });
+    const newUser = await User.create({
+      username,
+      email,
+      password: hashedPassword,
+      role: role,
+    });
     if (!newUser)
       return res.status(400).json({
         success: false,
@@ -36,9 +42,9 @@ const registerController = async (req, res) => {
 };
 
 const loginController = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
   try {
-    const userExisted = await User.findOne({ email });
+    const userExisted = await User.findOne({ username });
     if (!userExisted)
       return res.status(400).json({
         success: false,
@@ -55,17 +61,14 @@ const loginController = async (req, res) => {
       });
     }
     // after the password is also maching we have to create a token which is hold the information of logined user
-    const token = jwt.sign({ id: userExisted._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
+    const token = jwt.sign({  userExisted}, process.env.JWT_SECRET, {
+      expiresIn: "8d",
     });
     console.log(token);
     res.status(200).json({
       success: true,
       message: " user logined successfully",
-      user: {
-        id: userExisted._id,
-        email: userExisted.email,
-      },
+      user: userExisted,
       token,
     });
   } catch (error) {
@@ -77,4 +80,11 @@ const loginController = async (req, res) => {
   }
 };
 
-export { registerController, loginController };
+const adminController = async (req, res) => {
+  res.json({
+    success: true,
+    message: "welcome to admin page ",
+  });
+};
+
+export { registerController, loginController, adminController };

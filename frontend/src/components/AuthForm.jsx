@@ -3,85 +3,186 @@ import { useMutation } from "@tanstack/react-query";
 import useAuthStore from "../store/auth";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../lib/axios";
+
 const AuthForm = ({ type }) => {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const isLogin = type === "login";
+
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "",
+    role: "",
+  });
+
   const setAuth = useAuthStore((state) => state.setAuth);
   const navigate = useNavigate();
-  const Mutate = useMutation({
+
+  const mutation = useMutation({
     mutationFn: async () => {
-      const url = type === "login" ? "/api/auth/login" : "/api/auth/register";
-      const response = await api.post(url, form);
+      const url = isLogin ? "/api/auth/login" : "/api/auth/register";
+      const payload = isLogin
+        ? { username: form.username, password: form.password }
+        : form;
+
+      const response = await api.post(url, payload);
       return response.data;
     },
     onSuccess: (data) => {
-      const { user } = data ?? {};
-      console.log(data);
-      setAuth({ user: user.email, token: data.token });
-      navigate("/dashboard");
+      if (isLogin) {
+        setAuth({ user: data.user, token: data.token });
+        navigate("/dashboard");
+      } else {
+        navigate("/login");
+      }
     },
     onError: (error) => {
-      console.log(error);
-      alert(error?.response?.data?.message || "unknown Error");
+      alert(error?.response?.data?.message || "Unknown error occurred");
     },
   });
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    Mutate.mutate();
+    mutation.mutate();
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white p-6 rounded-xl shadow-md w-96 space-y-4 flex flex-col items-center justify-center"
-    >
-      <h1 className="text-2xl font-bold">
-        {type === "login" ? "Login" : "Create Acount"}
-      </h1>
-      <input
-        type="email"
-        placeholder="Email"
-        value={form.email}
-        onChange={(e) => setForm({ ...form, email: e.target.value })}
-        className="border rounded p-2 w-full"
-        required
-      />
-      <input
-        type="password"
-        value={form.password}
-        placeholder="Password"
-        onChange={(e) => setForm({ ...form, password: e.target.value })}
-        className="border rounded p-2 w-full"
-        required
-      />
-      <button
-        type="submit"
-        className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded w-full"
-        disabled={Mutate.isLoading}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-200 px-4 ">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white/90 backdrop-blur-md shadow-2xl  rounded-2xl p-8 w-full max-w-md space-y-6 flex flex-col "
+        autoComplete="off"
       >
-        {Mutate.isLoading
-          ? "Loading..."
-          : type === "login"
-          ? "login"
-          : "register"}
-      </button>
-      <p>
-        {type === "login" ? (
-          <>
-            Don’t have an account?{" "}
-            <Link className="text-blue-600" to="/Register">
-              Register
-            </Link>
-          </>
-        ) : (
-          <>
-            Already have an account?{" "}
-            <Link className="text-blue-600" to="/Login">
-              Login
-            </Link>
-          </>
-        )}
-      </p>
-    </form>
+        <h1 className="text-3xl font-extrabold text-center mb-2 tracking-tight">
+          {isLogin ? "Sign In" : "Create Account"}
+        </h1>
+        <p className="text-center text-gray-500 mb-4">
+          {isLogin
+            ? "Welcome back! please enter your credentials."
+            : "Register a new account to get started"}
+        </p>
+        <div className="space-y-4">
+          <div>
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              username
+            </label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              placeholder="your username"
+              value={form.username}
+              onChange={handleChange}
+              className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 transistion"
+              required
+              autoFocus
+            />
+          </div>
+          {!isLogin && (
+            <>
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-1 "
+                >
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  value={form.email}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 transistion"
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="role"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Role
+                </label>
+                <input
+                  id="role"
+                  name="role"
+                  type="text"
+                  placeholder="e.g., user or admin"
+                  value={form.role}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+                  required
+                />
+                <span className="text-xs text-gray-400">
+                  Choose your role for access level.
+                </span>
+              </div>
+            </>
+          )}
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="text"
+              placeholder="your password"
+              value={form.password}
+              onChange={handleChange}
+              className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 transition "
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          className="mt-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg shadow transistion disabled:opacity-60
+        "
+          disabled={mutation.isLoading}
+        >
+          {mutation.isLoading
+            ? isLogin
+              ? "Signing in..."
+              : "Registering..."
+            : isLogin
+            ? "Sign In"
+            : "Register"}
+        </button>
+        <div className="text-center text-sm mt-2">
+          {isLogin ? (
+            <>
+              Don’t have an account?{" "}
+              <Link
+                className="text-indigo-600 hover:underline font-medium"
+                to="/register"
+              >
+                Register
+              </Link>
+            </>
+          ) : (
+            <>
+              Already have an account?{" "}
+              <Link
+                className="text-indigo-600 hover:underline font-medium"
+                to="/login"
+              >
+                Sign In
+              </Link>
+            </>
+          )}
+        </div>
+      </form>
+    </div>
   );
 };
 

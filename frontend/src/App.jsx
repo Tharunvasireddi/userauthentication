@@ -4,6 +4,9 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectRoute";
 import Home from "./pages/Homepage";
+import AdminProtectRouter from "./components/adminProtectRoute";
+import UploadImages from "./components/uploadImage";
+import GetImages from "./components/getImages";
 function App() {
   return (
     <Routes>
@@ -15,6 +18,25 @@ function App() {
         element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/upload"
+        element={
+          <ProtectedRoute>
+            <AdminProtectRouter>
+              <UploadImages />
+            </AdminProtectRouter>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/getAll"
+        element={
+          <ProtectedRoute>
+            <GetImages />
           </ProtectedRoute>
         }
       />

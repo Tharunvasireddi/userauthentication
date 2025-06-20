@@ -3,9 +3,14 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { connectionDb } from "./config/mongodb.js";
 import {
+  adminRouter,
+  deleteImageRouter,
+  getAllImagesRouter,
+  getSingleImageRouter,
   loginRouter,
   protectMiddlewareRouter,
   registerRouter,
+  uploadImageRouter,
 } from "./routes/auth-router.js";
 dotenv.config({ path: "./.env" });
 
@@ -23,6 +28,11 @@ connectionDb();
 app.use("/api/auth", registerRouter);
 app.use("/api/auth", loginRouter);
 app.use("/api/auth", protectMiddlewareRouter);
+app.use("/api/auth", adminRouter);
+app.use("/api/auth", uploadImageRouter);
+app.use("/api/auth", getAllImagesRouter);
+app.use("/api/auth", getSingleImageRouter);
+app.use("/api/auth", deleteImageRouter);
 const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`server is now running on ${port}`);
