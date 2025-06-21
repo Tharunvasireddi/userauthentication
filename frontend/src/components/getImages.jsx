@@ -85,7 +85,7 @@ const GetImages = () => {
             <img
               src={image.url}
               alt={`Uploaded image ${index + 1}`}
-              className="w-full max-w-full h-56 sm:h-64 aspect-video object-contain bg-white rounded-lg border mb-3 sm:mb-4"
+              className="w-auto max-w-full h-56 sm:h-64 aspect-video object-contain bg-white rounded-lg border mb-3 sm:mb-4"
               loading="lazy"
             />
             {role === "admin" && (
