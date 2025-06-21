@@ -7,13 +7,15 @@ const Home = () => {
   return (
     <>
       {/* Navigation Bar */}
-      <nav className="bg-gray-900 text-white p-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold">My Full Stack App</h1>
-        <div>
+      <nav className="bg-gray-900 text-white p-4 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0">
+        <h1 className="text-lg sm:text-xl font-bold mb-2 sm:mb-0">
+          My Full Stack App
+        </h1>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
           {user ? (
             <Link
               to="/dashboard"
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm sm:text-base text-center"
             >
               Dashboard
             </Link>
@@ -21,13 +23,13 @@ const Home = () => {
             <>
               <Link
                 to="/login"
-                className="mr-4 border border-white px-4 py-2 rounded hover:bg-white hover:text-gray-900"
+                className="border border-white px-4 py-2 rounded hover:bg-white hover:text-gray-900 text-sm sm:text-base text-center"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600"
+                className="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 text-sm sm:text-base text-center"
               >
                 Register
               </Link>
@@ -37,11 +39,11 @@ const Home = () => {
       </nav>
 
       {/* Main Content */}
-      <main className="flex flex-col items-center justify-center h-[80vh] text-center">
-        <h2 className="text-4xl font-bold mb-4">
+      <main className="flex flex-col items-center justify-center min-h-[80vh] text-center px-2 sm:px-0">
+        <h2 className="text-2xl sm:text-4xl font-bold mb-4">
           Welcome {user?.email ? `, ${user.email}` : "to the App!"}
         </h2>
-        <p className="text-gray-600 max-w-xl">
+        <p className="text-gray-600 max-w-xl text-sm sm:text-base">
           This is a simple yet powerful full-stack web application built using
           React on the frontend and Node.js with Express.js on the backend. It
           features a complete user authentication system with registration,

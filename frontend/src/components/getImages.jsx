@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import api from "../lib/axios";
 import { useState } from "react";
-
+import useAuthStore from "../store/auth";
 const GetImages = () => {
+  const role = useAuthStore((state) => state.user.role);
   const queryClient = useQueryClient();
   const [imageId, setImageId] = useState("");
   // const mutate = useMutation({
@@ -56,12 +57,12 @@ const GetImages = () => {
     }
   };
   return (
-    <main className="min-h-screen w-full bg-gradient-to-br from-emerald-200 to-indigo-100 flex flex-col items-center py-10">
-      <h1 className="text-4xl font-extrabold text-indigo-700 mb-8 tracking-tight ">
+    <main className="min-h-screen w-full bg-gradient-to-br from-emerald-200 to-indigo-100 flex flex-col items-center py-6 sm:py-10">
+      <h1 className="text-2xl sm:text-4xl font-extrabold text-indigo-700 mb-6 sm:mb-8 tracking-tight">
         Image Gallery
       </h1>
       {isLoading && (
-        <div className="text-lg text-gray-600 animate-pulse">
+        <div className="text-base sm:text-lg text-gray-600 animate-pulse">
           Loading images...
         </div>
       )}
@@ -70,7 +71,7 @@ const GetImages = () => {
           Failed to load images...
         </div>
       )}
-      <section className=" gird grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-8 px-4">
+      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 px-2 sm:px-4 w-full max-w-6xl">
         {images?.length === 0 && (
           <div className="col-span-full text-center text-gray-500">
             No images found.
@@ -79,27 +80,29 @@ const GetImages = () => {
         {images?.map((image, index) => (
           <figure
             key={image._id}
-            className=" rounded-xl shadow-md p-4 flex space-x-4 items-center transistion hover:shadow-lg"
+            className="bg-white/80 rounded-xl shadow-md p-3 sm:p-4 flex flex-col items-center transition hover:shadow-lg w-auto max-w-full mx-auto"
           >
             <img
               src={image.url}
               alt={`Uploaded image ${index + 1}`}
-              className="w-64 h-64 object-cover rounded-lg border mb-4"
+              className="w-full max-w-full h-56 sm:h-64 aspect-video object-contain bg-white rounded-lg border mb-3 sm:mb-4"
               loading="lazy"
             />
-            <button
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition font-semibold shadow-sm disabled:opacity-60"
-              onClick={() => {
-                handleDelete(image._id);
-                setImageId(image._id);
-              }}
-              disabled={deleteMutation.isLoading}
-              aria-label={`Delete image ${index + 1}`}
-            >
-              {deleteMutation.isLoading && imageId === image._id
-                ? "Deleting..."
-                : "Delete"}
-            </button>
+            {role === "admin" && (
+              <button
+                className="w-full bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded transition font-semibold shadow-sm disabled:opacity-60 text-sm sm:text-base"
+                onClick={() => {
+                  handleDelete(image._id);
+                  setImageId(image._id);
+                }}
+                disabled={deleteMutation.isLoading}
+                aria-label={`Delete image ${index + 1}`}
+              >
+                {deleteMutation.isLoading && imageId === image._id
+                  ? "Deleting..."
+                  : "Delete"}
+              </button>
+            )}
           </figure>
         ))}
       </section>

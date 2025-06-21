@@ -48,16 +48,16 @@ const AuthForm = ({ type }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-200 px-4 ">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-200 px-2 sm:px-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white/90 backdrop-blur-md shadow-2xl  rounded-2xl p-8 w-full max-w-md space-y-6 flex flex-col "
+        className="bg-white/90 backdrop-blur-md shadow-2xl rounded-2xl p-4 sm:p-8 w-full max-w-xs sm:max-w-md md:max-w-lg space-y-6 flex flex-col"
         autoComplete="off"
       >
-        <h1 className="text-3xl font-extrabold text-center mb-2 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-center mb-2 tracking-tight">
           {isLogin ? "Sign In" : "Create Account"}
         </h1>
-        <p className="text-center text-gray-500 mb-4">
+        <p className="text-center text-gray-500 mb-4 text-sm sm:text-base">
           {isLogin
             ? "Welcome back! please enter your credentials."
             : "Register a new account to get started"}
@@ -77,7 +77,7 @@ const AuthForm = ({ type }) => {
               placeholder="your username"
               value={form.username}
               onChange={handleChange}
-              className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 transistion"
+              className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 transition text-sm sm:text-base"
               required
               autoFocus
             />
@@ -87,7 +87,7 @@ const AuthForm = ({ type }) => {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-1 "
+                  className="block text-sm font-medium text-gray-700 mb-1"
                 >
                   Email
                 </label>
@@ -98,7 +98,7 @@ const AuthForm = ({ type }) => {
                   placeholder="you@example.com"
                   value={form.email}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 transistion"
+                  className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 transition text-sm sm:text-base"
                   required
                 />
               </div>
@@ -116,7 +116,7 @@ const AuthForm = ({ type }) => {
                   placeholder="e.g., user or admin"
                   value={form.role}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+                  className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 transition text-sm sm:text-base"
                   required
                 />
                 <span className="text-xs text-gray-400">
@@ -139,15 +139,14 @@ const AuthForm = ({ type }) => {
               placeholder="your password"
               value={form.password}
               onChange={handleChange}
-              className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 transition "
+              className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 transition text-sm sm:text-base"
               required
             />
           </div>
         </div>
         <button
           type="submit"
-          className="mt-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg shadow transistion disabled:opacity-60
-        "
+          className="mt-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg shadow transition disabled:opacity-60 text-sm sm:text-base"
           disabled={mutation.isLoading}
         >
           {mutation.isLoading
@@ -158,7 +157,7 @@ const AuthForm = ({ type }) => {
             ? "Sign In"
             : "Register"}
         </button>
-        <div className="text-center text-sm mt-2">
+        <div className="text-center text-xs sm:text-sm mt-2">
           {isLogin ? (
             <>
               Don’t have an account?{" "}
