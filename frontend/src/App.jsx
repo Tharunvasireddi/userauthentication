@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import Login from "./pages/login";
-import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
-import ProtectedRoute from "./components/ProtectRoute";
-import Home from "./pages/Homepage";
-import AdminProtectRouter from "./components/adminProtectRoute";
-import UploadImages from "./components/uploadImage";
-import GetImages from "./components/getImages";
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import ProtectedRoute from "./components/ProtectRoute.jsx";
+import Home from "./pages/Homepage.jsx";
+import AdminProtectRouter from "./components/adminProtectRoute.jsx";
+import UploadImages from "./components/uploadImage.jsx";
+import GetImages from "./components/getImages.jsx";
 function App() {
   return (
     <Routes>

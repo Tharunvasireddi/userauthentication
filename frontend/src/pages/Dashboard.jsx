@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import useAuthStore from "../store/auth";
+import useAuthStore from "../store/auth.js";
 
 const Dashboard = () => {
   const logout = useAuthStore((state) => state.logout);
