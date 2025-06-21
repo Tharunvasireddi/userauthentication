@@ -35,9 +35,8 @@ app.use("/api/auth", getSingleImageRouter);
 app.use("/api/auth", deleteImageRouter);
 const port = process.env.PORT || 4000;
 
+app.listen(port, () => {
+  console.log(`server is now running on ${port}`);
+});
 export default app;
-if (process.env.NODE_ENV !== "production") {
-  app.listen(port, () => {
-    console.log(`server is now running on ${port}`);
-  });
-}
+
