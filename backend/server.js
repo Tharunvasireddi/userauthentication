@@ -33,7 +33,7 @@ app.use("/api/auth", uploadImageRouter);
 app.use("/api/auth", getAllImagesRouter);
 app.use("/api/auth", getSingleImageRouter);
 app.use("/api/auth", deleteImageRouter);
-const port = process.env.PORT;
+const port = process.env.PORT || 4000;
 
 export default app;
 if (process.env.NODE_ENV !== "production") {
