@@ -4,6 +4,7 @@ import { useState } from "react";
 import useAuthStore from "../store/auth";
 const GetImages = () => {
   const role = useAuthStore((state) => state.user.role);
+  const id = useAuthStore((state) => state.user._id);
   const queryClient = useQueryClient();
   const [imageId, setImageId] = useState("");
   // const mutate = useMutation({
@@ -34,7 +35,7 @@ const GetImages = () => {
     },
     staleTime: 6 * 60 * 1000,
   });
-
+  console.log(images);
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
       const url = `/api/auth/deleteImage/${id}`;
@@ -88,7 +89,7 @@ const GetImages = () => {
               className="w-auto max-w-full h-56 sm:h-64 aspect-video object-contain bg-white rounded-lg border mb-3 sm:mb-4"
               loading="lazy"
             />
-            {role === "admin" && (
+            {role === "admin" && id === image.uploadedBy && (
               <button
                 className="w-full bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded transition font-semibold shadow-sm disabled:opacity-60 text-sm sm:text-base"
                 onClick={() => {
