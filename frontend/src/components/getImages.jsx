@@ -89,21 +89,22 @@ const GetImages = () => {
               className="w-auto max-w-full h-56 sm:h-64 aspect-video object-contain bg-white rounded-lg border mb-3 sm:mb-4"
               loading="lazy"
             />
-            {role === "admin" && id === image.uploadedBy && (
-              <button
-                className="w-full bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded transition font-semibold shadow-sm disabled:opacity-60 text-sm sm:text-base"
-                onClick={() => {
-                  handleDelete(image._id);
-                  setImageId(image._id);
-                }}
-                disabled={deleteMutation.isLoading}
-                aria-label={`Delete image ${index + 1}`}
-              >
-                {deleteMutation.isLoading && imageId === image._id
-                  ? "Deleting..."
-                  : "Delete"}
-              </button>
-            )}
+            {(role === "admin" || role === "Admin") &&
+              id === image.uploadedBy && (
+                <button
+                  className="w-full bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded transition font-semibold shadow-sm disabled:opacity-60 text-sm sm:text-base"
+                  onClick={() => {
+                    handleDelete(image._id);
+                    setImageId(image._id);
+                  }}
+                  disabled={deleteMutation.isLoading}
+                  aria-label={`Delete image ${index + 1}`}
+                >
+                  {deleteMutation.isLoading && imageId === image._id
+                    ? "Deleting..."
+                    : "Delete"}
+                </button>
+              )}
           </figure>
         ))}
       </section>
