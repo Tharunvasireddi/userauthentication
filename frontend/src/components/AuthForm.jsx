@@ -40,7 +40,7 @@ const AuthForm = ({ type }) => {
     },
   });
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.value.toLowerCase() });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
